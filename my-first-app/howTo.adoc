@@ -1,0 +1,23 @@
+npm install -g @angular/cli
+ng new my-deaam-app
+ng serve
+----
+npm install --save bootstrap
+ my-first-app $ find . -name 'bootstrap.min.css' -print
+./node_modules/bootstrap/dist/css/bootstrap.min.css
+ my-first-app $
+And inside angular.json :
+"styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
+            ],
+---------
+ my-first-app $ ng generate component servers
+CREATE src/app/servers/servers.component.css (0 bytes)
+CREATE src/app/servers/servers.component.html (26 bytes)
+CREATE src/app/servers/servers.component.spec.ts (635 bytes)
+CREATE src/app/servers/servers.component.ts (273 bytes)
+UPDATE src/app/app.module.ts (520 bytes)
+ my-first-app $
+
+
