@@ -19,5 +19,11 @@ CREATE src/app/servers/servers.component.spec.ts (635 bytes)
 CREATE src/app/servers/servers.component.ts (273 bytes)
 UPDATE src/app/app.module.ts (520 bytes)
  my-first-app $
+Best practices :
+component name = directory name.
+component are reusable by their selectors.
+Angular select element by Element itself or by attribut, or by class .
 
 
+------ Directives -----
+- see <p appTurnGreen> some texte .... </p>
