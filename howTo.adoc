@@ -27,3 +27,69 @@ Angular select element by Element itself or by attribut, or by class .
 
 ------ Directives -----
 - see <p appTurnGreen> some texte .... </p>
+
+
+Angular 5 (formerly Angular 2) - The Complete Guide
+
+Chapter 1 : Getting Started
+100% of section complete
+
+Chapter 2 : The Basics
+100% of section complete
+
+Chapter 3 : Course Project - The Basics
+100% of section complete
+
+Chapter 4 : Debugging
+100% of section complete
+
+Chapter 5 : Components & Databinding Deep Dive
+100% of section complete
+
+Chapter 6 : Course Project - Components & Databinding
+
+Chapter 7 : Directives Deep Dive
+
+Chapter 8 : Course Project – Directives
+
+Chapter 9 : Using Services & Dependency Injection
+
+Chapter 10 : Course Project - Services & Dependency Injection
+
+Chapter 11 : Changing Pages with Routing
+
+Chapter 12 : Course Project – Routing
+
+Chapter 13 : Understanding Observables
+
+Chapter 14 : Handling Forms in Angular Apps
+
+Chapter 15 : Course Project – Forms
+
+Chapter 16 : Course Project – Forms
+
+Chapter 17 : Using Pipes to Transform Output
+
+Chapter 18 : Making Http Requests
+
+Chapter 19 : Course Project – Http
+
+Chapter 20 : Authentication & Route Protection in Angular Apps
+
+Chapter 21 : Using Angular Modules & Optimizing Apps
+
+Chapter 22 : Deploying an Angular App
+
+Chapter 23 : Bonus: The HttpClient
+
+Chapter 24 : Bonus: Working with NgRx in our Project
+
+Chapter 25 : Bonus: Angular Universal
+
+Chapter 26 : Angular Animations
+
+Chapter 27 : A Basic Introduction to Unit Testing in Angular Apps
+
+Chapter 28 : Course Roundup
+
+Chapter 29 : Custom Project & Workflow Setup
