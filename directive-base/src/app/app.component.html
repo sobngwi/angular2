@@ -3,6 +3,24 @@
   <div class="row">
     <div class="col-xl-12">
       <h3>Master {{ title }}!</h3>
+      <ol>
+        <li>Add a button which say 'Display Details'</li>
+        <li>Add a paragraph which any content of your code choice ( eg : 'Secret Password = tuna')</li>
+        <li>Toggle the displaying of that paragraph which the button created in first step</li>
+        <li>Log all button clicks in an array and output that array below the screen paragraph ( may be log a timestamp or simply an incrementing number )</li>
+        <li>Starting at 5th log item, give all future log items a blue background ( via ngStyle) and white color ( ngClass)</li>
+      </ol>
+      <hr>
+      <button class="btn btn-primary" (click)="showSecret =  !showSecret">Show password</button>
+      {{showSecret}}
+      <hr>
+      <button class="btn btn-primary" (click)="onToggleDetails()">Display Details</button>
+      <p *ngIf="showSecret"> Secret Password = {{pwd}}</p>
+      <div
+        *ngFor="let logItem of log; let i = index"
+        [ngStyle]="{backgroundColor:  i >= 4 ? 'blue' : 'transparent'}"
+        [ngClass]="{'white-text' : i >= 4 }">{{logItem}}
+      </div>
       <hr>
       <app-servers></app-servers>
     </div>
