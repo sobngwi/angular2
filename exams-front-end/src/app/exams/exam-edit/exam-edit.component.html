@@ -1,3 +1,66 @@
-<p>
-  exam-edit works!
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="idQuestion">Question-Id</label>
+            <input style="width: 80px"
+              type="text"
+              id="idQuestion"
+              formControlName="idQuestion"
+              class="form-control" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="questionText">Question Text</label>
+            <textarea
+              type="text"
+              id="questionText"
+              class="form-control"
+              formControlName="questionText"
+              rows="3" readonly></textarea>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="codeText">Java Code</label>
+            <textarea
+              type="text"
+              id="codeText"
+              class="form-control"
+              formControlName="codeText"
+              rows="8">
+              </textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" formArrayName="ingredients">
+          <div class="radio" *ngFor="let ingredient of recipeForm.get('ingredients').controls;">
+            <label>
+              <input
+                type="radio"
+                [value]="ingredient">{{ingredient.value.name}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            style="margin:20px;"
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!recipeForm.valid">Save</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

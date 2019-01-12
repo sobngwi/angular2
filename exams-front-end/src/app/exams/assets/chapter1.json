@@ -1,0 +1,356 @@
+{
+  "1": {
+    "exam": "N",
+    "javaCode": "public class Employee { \npublic int employeeId; \npublic String firstName, lastName; \npublic int yearStarted;\n@Override public int hashCode() {\n return employeeId;\n}\npublic boolean equals(Employee e) {\nreturn this.employeeId == e.employeeId;\n}\npublic static void main(String[] args) {\n Employee one = new Employee();\none.employeeId = 101;\nEmployee two = new Employee();\ntwo.employeeId = 101; \nif (one.equals(two)) System.out.println(\"Success\"); \nelse System.out.println(\"Failure\"); \n } \n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q1",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. Success",
+      "B. Failure",
+      "C . The hashCode() method fails to compile.",
+      "D . The equals() method fails to compile.",
+      "E . Another line of code fails to compile.",
+      "F . runtime exception is thrown."
+    ]
+  },
+  "2": {
+    "exam": "N",
+    "javaCode": "public class Book {\nprivate int ISBN;\nprivate String title, author;\nprivate int pageCount;\npublic int hashCode() {\nreturn ISBN;\nreturn ISBN;\n}\n@Override public boolean equals(Object obj) {\nif (!(obj instanceof Book)) {\nreturn false;\n}\nBook other = (Book) obj;\nreturn this.ISBN == other.ISBN;\n]\n// imagine getters and setters are here\n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q2",
+    "text": "What is the result of compiling the following class?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. The code compiles.",
+      "B. The code does not compile because hashCode() is incorrect.",
+      "C. The code does not compile because equals() does not override the parent method correctly.",
+      "D. The code does not compile because equals() tries to refer to a private field.",
+      "E. The code does not compile because the ClassCastException is not handled or declared.",
+      "F. SThe code does not compile for another reason."
+    ]
+  },
+  "3": {
+    "exam": "N",
+    "javaCode": "String s1 = \"Canada\";\nString s2 = new String(s1);\nif(s1 == s2) System.out.println(\"s1 == s2\");\nif(s1.equals(s2)) System.out.println(\"s1.equals(s2)\");",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q3",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. There is no output.",
+      "B. s1 == s2",
+      "C. s1.equals(s2)",
+      "D. Both B and C.",
+      "E. The code does not compile.",
+      "F. The code throws a runtime exception."
+    ]
+  },
+  "4": {
+    "exam": "N",
+    "javaCode": "public class BaseballTeam {\nprivate String city, mascot;\nprivate int numberOfPlayers;\npublic boolean equals(Object obj) {\nif (!(obj instanceof BaseballTeam))\nreturn false;\nBaseballTeam other = (BaseballTeam) obj;\nreturn (city.equals(other.city) && mascot.equals(other.mascot));\n}\npublic int hashCode() {\nreturn numberOfPlayers;\n}\n// imagine getters and setters are here\n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q4",
+    "text": "What is true about the following code? You may assume city and mascot are never null",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. The class does not compile.",
+      "B. The class compiles but has an improper equals() method.",
+      "C. The class compiles but has an improper hashCode()",
+      "D. The class compiles and has proper equals() and hashCode() methods."
+    ]
+  },
+  "5": {
+    "exam": "N",
+    "javaCode": "public class BaseballTeam {\nprivate String city, mascot;\nprivate int numberOfPlayers;\npublic boolean equals(Object obj) {\nif (!(obj instanceof BaseballTeam))\nreturn false;\nBaseballTeam other = (BaseballTeam) obj;\nreturn (city.equals(other.city) && mascot.equals(other.mascot));\n}\npublic int hashCode() {\nreturn numberOfPlayers;\n}\n// imagine getters and setters are here\n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q5",
+    "text": "What is true about the following code? You may assume city and mascot are never null.",
+    "chapitre": "1",
+    "type": "Multiple Choice",
+    "choices": [
+      "A. The class does not compile.",
+      "B. The class compiles but has an improper equals() method.",
+      "C. The class compiles but has an improper hashCode() method.",
+      "D. The class compiles and has proper equals() and hashCode() methods."
+    ]
+  },
+  "6": {
+    "exam": "N",
+    "javaCode": "public class FlavorsEnum {\nenum Flavors {\nVANILLA, CHOCOLATE, STRAWBERRY\n}\npublic static void main(String[] args) {\nSystem.out.println(Flavors.CHOCOLATE.ordinal());\n}\n}\n",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q6",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. 0",
+      "B. Your selection is incorrect",
+      "C. 9",
+      "D. CHOCOLATE",
+      "E. The code does not compile due to a missing semicolon.",
+      "F. The code does not compile for a different reason."
+    ]
+  },
+  "7": {
+    "exam": "N",
+    "javaCode": "public class IceCream {\nenum Flavors {\nVANILLA, CHOCOLATE, STRAWBERRY\n}\npublic static void main(String[] args) {\nFlavors f = Flavors.STRAWBERRY;\nswitch (f) {\ncase 0: System.out.println(\"vanilla\");\ncase 1: System.out.println(\"chocolate\");\ncase 2: System.out.println(\"strawberry\");\nbreak;\ndefault: System.out.println(\"missing flavor\");\n} } }",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q7",
+    "text": "What is the result of the following code? (Choose all that apply.)",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. vanilla",
+      "B. chocolate",
+      "C. strawberry",
+      "D. missing flavor",
+      "E. The code does not compile.",
+      "F. An exception is thrown."
+    ]
+  },
+  "8": {
+    "exam": "N",
+    "javaCode": "public class Outer {\nprivate int x = 5;\nprotected class Inner {\npublic static int x = 10;\npublic void go() { System.out.println(x); }\n}\npublic static void main(String[] args) {\nOuter out = new Outer();\nOuter.Inner in = out.new Inner();\nin.go();\n} }",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q8",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. The output is 5.",
+      "B. The output is 10.",
+      "C. Line 4 generates a compiler error.",
+      "D. Line 8 generates a compiler error.",
+      "E. Line 9 generates a compiler error.",
+      "F. An exception is thrown."
+    ]
+  },
+  "9": {
+    "exam": "N",
+    "javaCode": "public class Outer {\nprivate int x = 24;\npublic int getX() {\nString message = \"x is \";\nclass Inner {\nprivate int x = Outer.this.x;\npublic void printX() {\nSystem.out.println(message + x);\n}\n}\nInner in = new Inner();\nin.printX();\nreturn x;\n}\npublic static void main(String[] args) {\nnew Outer().getX();\n} }",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q9",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "x is 0.",
+      "x is 24.",
+      "Line 6 generates a compiler error.",
+      "Line 8 generates a compiler error.",
+      "Line 11 generates a compiler error.",
+      "An exception is thrown."
+    ]
+  },
+  "10": {
+    "exam": "N",
+    "javaCode": "public class Book {\nprivate int pageNumber;\nprivate class BookReader {\npublic int getPage() {\nreturn pageNumber;\n} } }",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q10",
+    "text": "The following code appears in a file named Book.java. What is the result of compiling the source file?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. The code compiles successfully, and one bytecode file is generated: Book.class.",
+      "B. The code compiles successfully, and two bytecode files are generated: Book.class and BookReader.class.",
+      "C. The code compiles successfully, and two bytecode files are generated: Book.class and Book$BookReader.class",
+      "D. A compiler error occurs on line 3.",
+      "E. SA compiler error occurs on line 5."
+    ]
+  },
+  "11": {
+    "exam": "N",
+    "javaCode": "package my.sports;\npublic class Football {\npublic static final int TEAM_SIZE = 11;\n}\npackage my.apps;\n// INSERT CODE HERE\npublic class FootballGame {\npublic int getTeamSize() { return TEAM_SIZE; }\n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q11",
+    "text": "Which of the following statements can be inserted to make FootballGame compile?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. import my.sports.Football;",
+      "B. import static my.sports.*;",
+      "C. import static my.sports.Football;",
+      "D. import static my.sports.Football.*;",
+      "E. static import my.sports.*;",
+      "F. static import my.sports.Football;",
+      "G. static import my.sports.Football.*;"
+    ]
+  },
+  "12": {
+    "exam": "N",
+    "javaCode": "public class Browsers {\nstatic class Browser {\npublic void go() {\nSystem.out.println(\"Inside Browser\");\n}\n}static class Firefox extends Browser {\npublic void go() {\nSystem.out.println(\"Inside Firefox\");\n}\n}\nstatic class IE extends Browser {\n@Override public void go() {\nSystem.out.println(\"Inside IE\");\n}\n}\npublic static void main(String[] args) {\nBrowser b = new Firefox();\nIE e = (IE) b;\ne.go();\n}}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q12",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. Inside Browser",
+      "B. Inside Firefox",
+      "C. Inside IE",
+      "D. The code does not compile.",
+      "E. SA runtime exception is thrown.Your selection is incorrect"
+    ]
+  },
+  "13": {
+    "exam": "N",
+    "javaCode": "public class IsItFurry {\nstatic interface Mammal { }\nstatic class Furry implements Mammal { }\nstatic class Chipmunk extends Furry { }\npublic static void main(String[] args) {\nChipmunk c = new Chipmunk();\nMammal m = c;\nFurry f = c;\nint result = 0;\nif (c instanceof Mammal) result += 1;\nif (c instanceof Furry) result +=2;\nif (null instanceof Chipmunk) result += 4;\nSystem.out.println(result);\n} }\n",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q13",
+    "text": "Which is a true statement about the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. The output is 0.",
+      "B. The output is 3.",
+      "C. The output is 7.",
+      "D. c instanceof Mammal does not compile.",
+      "E. c instanceof Furry does not compile.",
+      "F. null instanceof Chipmunk does not compile."
+    ]
+  },
+  "14": {
+    "exam": "N",
+    "javaCode": "import java.util.*;\npublic class IsItFurry {\nstatic class Chipmunk { }\npublic static void main(String[] args) {\nChipmunk c = new Chipmunk();\nArrayList<Chipmunk> l = new ArrayList<>();\nRunnable r = new Thread();\nint result = 0;\nif (c instanceof Chipmunk) result += 1;\nif (l instanceof Chipmunk) result +=2;\nif (r instanceof Chipmunk) result += 4;\nSystem.out.println(result);\n} \n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q14",
+    "text": "Which is a true statement about the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. The code compiles, and the output is 0.",
+      "B. The code compiles, and the output is 3.",
+      "C. The code compiles, and the output is 7.",
+      "D. c instanceof Chipmunk does not compile.",
+      "E. l instanceof Chipmunk does not compile.Your selection is incorrect",
+      "F. r instanceof Chipmunk does not compile."
+    ]
+  },
+  "15": {
+    "exam": "N",
+    "javaCode": "",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q15",
+    "text": "Which of the following statements are true about the equals() method? (Choose all that apply.)",
+    "chapitre": "1",
+    "type": "Multiple Choice",
+    "choices": [
+      "A. If equals(null) is called, the method should throw an exception.",
+      "B. If equals(null) is called, the method should return false.Your selection is incorrect",
+      "C. If equals(null) is called, the method should return true.",
+      "D. If equals() is passed the wrong type, the method should throw an exception.",
+      "E. If equals() is passed the wrong type, the method should return false.",
+      "F. If equals() is passed the wrong type, the method should return true."
+    ]
+  },
+  "16": {
+    "exam": "N",
+    "javaCode": "public class Outer {\nclass Inner { }\npublic static void main(String[] args) {\n// INSERT CODE HERE\n} \n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q16",
+    "text": "Which of the following can be inserted in main?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. Inner in = new Inner();",
+      "B. Inner in = Outer.new Inner();",
+      "C. Outer.Inner in = new Outer.Inner();",
+      "D. Outer.Inner in = new Outer().Inner();",
+      "E. Outer.Inner in = new Outer().new Inner();",
+      "F. SOuter.Inner in = Outer.new Inner();"
+    ]
+  },
+  "17": {
+    "exam": "N",
+    "javaCode": "public enum AnimalClasses {\nMAMMAL(true), FISH(Boolean.FALSE), BIRD(false),\nREPTILE(false), AMPHIBIAN(false), INVERTEBRATE(false)\nboolean hasHair;\npublic AnimalClasses(boolean hasHair) {\nthis.hasHair = hasHair;\n}\npublic boolean hasHair() {\nreturn hasHair;\n}\npublic void giveWig() {\nhasHair = true;\n} }",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q17",
+    "text": "What is the result of the following code? (Choose all that apply.)",
+    "chapitre": "1",
+    "type": "Multiple Choice",
+    "choices": [
+      "A. Compiler error on line 2.",
+      "B. Compiler error on line 3.",
+      "C. Compiler error on line 5.",
+      "D. Compiler error on line 8.",
+      "E. SCompiler error on line 12.",
+      "F. Compiler error on another line.",
+      "G. SThe code compiles successfully."
+    ]
+  },
+  "18": {
+    "exam": "N",
+    "javaCode": "public class Swimmer {\nenum AnimalClasses {\nMAMMAL, FISH {\npublic boolean hasFins() { return true; }},\nBIRD, REPTILE, AMPHIBIAN, INVERTEBRATE;\npublic abstract boolean hasFins();\n}\npublic static void main(String[] args) {\nSystem.out.println(AnimalClasses.FISH);\nSystem.out.println(AnimalClasses.FISH.ordinal());\nSystem.out.println(AnimalClasses.FISH.hasFins());\nSystem.out.println(AnimalClasses.BIRD.hasFins());\n}\n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q18",
+    "text": "What is the result of the following code? (Choose all that apply.)",
+    "chapitre": "1",
+    "type": "Multiple Choice",
+    "choices": [
+      "A. fish",
+      "B. FISH",
+      "C. 0",
+      "D. 1",
+      "E. false",
+      "F. true",
+      "G. The code does not compile."
+    ]
+  },
+  "19": {
+    "exam": "N",
+    "javaCode": "public class LearnToWalk {\npublic void toddle() {}\nclass BabyRhino extends LearnToWalk {\n// INSERT CODE HERE\n}\n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q19",
+    "text": "Which of the following can be inserted to override the superclass method? (Choose all that apply.)",
+    "chapitre": "1",
+    "type": "Multiple Choice",
+    "choices": [
+      "A. public void toddle() {}",
+      "B. public void Toddle() {}",
+      "C. public final void toddle() {}",
+      "D. public static void toddle() {}",
+      "E. public void toddle() throws Exception {}",
+      "F. public void toddle(boolean fall) {}"
+    ]
+  },
+  "20": {
+    "exam": "N",
+    "javaCode": "public class FourLegged {\nString walk = \"walk,\";\nstatic class BabyRhino extends FourLegged {\nString walk = \"toddle,\";\n}\npublic static void main(String[] args) {\nFourLegged f = new BabyRhino();\nBabyRhino b = new BabyRhino();\nSystem.out.println(f.walk);\nSystem.out.println(b.walk);\n} }",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q20",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "A. toddle,toddle,",
+      "B. toddle,walk,",
+      "C. walk,toddle,",
+      "D. walk,walk,",
+      "E. The code does not compile.",
+      "F. A runtime exception is thrown."
+    ]
+  },
+  "21": {
+    "exam": "N",
+    "javaCode": "public interface Otter {\ndefault void play() { }\n}\nclass RiverOtter implements Otter {\n_____________________________\n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q21",
+    "text": "Which of the following could be inserted to fill in the blank? (Choose all that apply.)",
+    "chapitre": "1",
+    "type": "Multiple Choice",
+    "choices": [
+      "A. @Override public boolean equals(Object o) { return false; }",
+      "B. @Override public boolean equals(Otter o) { return false; }",
+      "C. @Override public int hashCode() { return 42; }",
+      "D. @Override public long hashCode() { return 42; }",
+      "E. @Override public void play() { }",
+      "F. @Override void play() { }"
+    ]
+  }
+}
