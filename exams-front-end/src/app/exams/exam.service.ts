@@ -6,6 +6,7 @@ import { Recipe } from './exam.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import {HttpClient, HttpClientModule, HttpErrorResponse} from '@angular/common/http';
+import {HttpServiceService} from './http-service.service';
 
 export interface Qu {
   chapitre: string;
@@ -16,12 +17,11 @@ export interface Qu {
   text: string;
   type: string;
 }
+
 @Injectable()
 export class ExamService {
   // 'http://localhost:8080/question/search/chapter/1'; //'assets/chapter.json';
-  private question : Qu;
   configUrl = 'http://localhost:8080/question/1';
-  recipeSelected = new EventEmitter<Recipe>();
   recipesChanged = new Subject<Recipe[]>();
   private recipes: Recipe[] = [
     new Recipe(
@@ -44,10 +44,7 @@ export class ExamService {
         new Ingredient('A runtime exception is thrown.', 2)
       ])
   ];
-
-  constructor(private slService: ShoppingListService, private http: HttpClient) {
-  }
-
+  constructor(private slService: ShoppingListService, private httpService: HttpServiceService, private http: HttpClient) {}
   getRecipes() {
     return this.recipes.slice();
   }
@@ -56,7 +53,10 @@ export class ExamService {
     return this.recipes[index];
   }
 
-  setIngredients( ingredients: Ingredient[] , index : number) {
+  synchronousGetDatasFromBacKend(url: string) {
+    return this.httpService.executeSynchronousRequest(url);
+  }
+  setIngredients( ingredients: Ingredient[] , index: number) {
     this.getRecipe(index).ingredients = ingredients;
   }
 

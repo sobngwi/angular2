@@ -1,25 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from './exam.model';
-import {Qu,ExamService} from './exam.service';
-
-
+import {ExamService} from './exam.service';
+import {HttpServiceService} from './http-service.service';
 
 @Component({
   selector: 'app-exams',
   templateUrl: './exams.component.html',
   styleUrls: ['./exams.component.css'],
-  providers: [ExamService]
+  providers: [ExamService, HttpServiceService]
 })
 export class ExamsComponent implements OnInit {
-  selectedRecipe: Recipe;
-  constructor(private examService: ExamService) { }
-
-  ngOnInit() {
-    this.examService.recipeSelected
-      .subscribe(
-        (recipe: Recipe) => {
-          this.selectedRecipe = recipe;
-        }
-      );
-  }
+  constructor() { }
+  ngOnInit() {}
 }

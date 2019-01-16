@@ -11,12 +11,12 @@ import { ExamService } from '../exam.service';
 })
 export class ExamListComponent implements OnInit {
   recipes: Recipe[];
-  constructor(private recipeService: ExamService,
+  constructor(private examService: ExamService,
               private router: Router,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.recipes = this.recipeService.getRecipes();
+    this.recipes = this.examService.getRecipes();
   }
   onNewRecipe() {
     this.router.navigate(['new'], {relativeTo: this.route});
