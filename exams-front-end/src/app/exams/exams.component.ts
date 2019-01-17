@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ExamService} from './exam.service';
-import {HttpServiceService} from './http-service.service';
+import {HttpService} from '../shared/http.service';
 
 @Component({
   selector: 'app-exams',
   templateUrl: './exams.component.html',
   styleUrls: ['./exams.component.css'],
-  providers: [ExamService, HttpServiceService]
+  providers: [ExamService, HttpService]
 })
 export class ExamsComponent implements OnInit {
   constructor() { }
