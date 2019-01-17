@@ -16,7 +16,9 @@ import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { AppRoutingModule } from './app-routing.module';
 import { ExamStartComponent } from './exams/exam-start/exam-start.component';
 import { ExamEditComponent } from './exams/exam-edit/exam-edit.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {AuthInterceptor} from './shared/auth.interceptor';
+import {LoggingInterceptor} from './shared/logging.interceptor';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import {HttpClientModule} from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [ShoppingListService],
+  providers: [ShoppingListService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

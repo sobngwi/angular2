@@ -26,14 +26,19 @@ export class ExamEditComponent implements OnInit, OnDestroy {
               private router: Router) {
   }
 
-  ngOnInit() {
+    ngOnInit() {
+      this.httpService.simpleGet('http://localhost:8080/question/search/chapter/1').subscribe(
+        (chap1: Array<QuestionModel>) => {
+          console.log(chap1);
+        }
+      );
     this.subscriptionParams = this.route.params
       .subscribe(
         (params: Params) => {
           this.id = +params['id'];
-          this.httpService
-            .executeSynchronousRequest('http://localhost:8080/question/search/chapter/' + this.examService.getRecipe(this.id).name)
-            .forEach(
+           this.httpService
+            .executeSynchronousRequest('http://localhost:8080/question/search/chapter/' + this.examService.getRecipe(this.id).name).
+           forEach(
             value => {
               this.questions.push({
                 id: value.id,
@@ -49,12 +54,9 @@ export class ExamEditComponent implements OnInit, OnDestroy {
           );
           this.editMode = params['id'] != null;
           this.initForm();
-          console.log((this.questions));
         }
       );
-
   }
-
   ngOnDestroy(): void {
     this.subscriptionParams.unsubscribe();
   }
