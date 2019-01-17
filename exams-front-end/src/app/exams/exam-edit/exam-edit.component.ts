@@ -1,9 +1,20 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ExamService, Qu} from '../exam.service';
+import {ExamService} from '../exam.service';
 import {Subscription} from 'rxjs';
 import {HttpServiceService} from '../http-service.service';
+
+export interface QuestiDetail {
+  id: string;
+  chapitre: string;
+  choices: String[];
+  exam: String;
+  javaCode: string;
+  subject: string;
+  text: string;
+  type: string;
+}
 
 @Component({
   selector: 'app-exam-edit',
@@ -15,10 +26,9 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   id: number;
   editMode = false;
   recipeForm: FormGroup;
-  private question: Qu;
-  private headers: string[];
+  private questions: Array<QuestiDetail> = new Array<QuestiDetail>();
+  private currentPositionInQuestions = 0;
   private subscriptionParams: Subscription;
-  private subscriptionRequest: Subscription;
 
   constructor(private route: ActivatedRoute,
               private examService: ExamService,
@@ -26,14 +36,33 @@ export class ExamEditComponent implements OnInit, OnDestroy {
               private router: Router) {
   }
 
-
   ngOnInit() {
     this.subscriptionParams = this.route.params
       .subscribe(
         (params: Params) => {
           this.id = +params['id'];
+          console.log(this.id);
+          console.log(this.examService.getRecipe(this.id));
+          console.log(this.examService.synchronousGetDatasFromBackEnd('http://localhost:8080/question/search/chapter/'
+            + this.examService.getRecipe(this.id).name));
+          this.examService.synchronousGetDatasFromBackEnd('http://localhost:8080/question/search/chapter/'
+            + this.examService.getRecipe(this.id).name).forEach(
+            value => {
+              this.questions.push({
+                id: value.id,
+                chapitre: value.chapitre,
+                choices: value.choices,
+                exam: value.exam,
+                javaCode: value.javaCode,
+                subject: value.subject,
+                text: value.text,
+                type: value.type
+              });
+            }
+          );
           this.editMode = params['id'] != null;
           this.initForm();
+          console.log((this.questions));
         }
       );
 
@@ -62,13 +91,10 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     let recipeDescription = '';
     let recipeIngredients = new FormArray([]);
 
-    var data = this.examService.synchronousGetDatasFromBacKend('http://localhost:8080/question/1');
+    var data = this.examService.synchronousGetDatasFromBackEnd('http://localhost:8080/question/1');
 
     if (this.editMode) {
       const recipe = this.examService.getRecipe(this.id);
-      recipeName = recipe.name;
-      recipeImagePath = recipe.imagePath;
-      recipeDescription = recipe.description;
       if (recipe['ingredients']) {
         for (let ingredient of recipe.ingredients) {
           recipeIngredients.push(
@@ -86,16 +112,15 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     }
 
     this.recipeForm = new FormGroup({
-      // 'name': new FormControl(recipeName, Validators.required),
-      // 'imagePath': new FormControl(recipeImagePath, Validators.required),
-     // 'description': new FormControl(recipeDescription, Validators.required),
-      'idQuestion': new FormControl(data.id, Validators.required),
-      'questionText': new FormControl(data.text,
+      'idQuestion': new FormControl( this.questions[this.currentPositionInQuestions].id,
         Validators.required),
-      'codeText': new FormControl(data.javaCode
-        .replace('\\n', '&#13;&#10;')),
-      'ingredients': recipeIngredients
+      'questionText': new FormControl(this.questions[this.currentPositionInQuestions].text,
+        Validators.required),
+      'codeText': new FormControl(this.questions[this.currentPositionInQuestions].javaCode,
+        Validators.required),
+      'ingredients': new FormControl(this.questions[this.currentPositionInQuestions].choices,
+        Validators.required) // recipeIngredients
     });
-    // console.log(this.recipeForm);
+     console.log(this.recipeForm);
   }
 }

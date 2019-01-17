@@ -6,7 +6,7 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="idQuestion">Question-Id</label>
-            <input style="width: 80px"
+            <input style="width: 90px"
               type="text"
               id="idQuestion"
               formControlName="idQuestion"
@@ -34,18 +34,19 @@
               id="codeText"
               class="form-control"
               formControlName="codeText"
-              rows="8">
+              rows="15" readonly>
               </textarea>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12" formArrayName="ingredients">
-          <div class="radio" *ngFor="let ingredient of recipeForm.get('ingredients').controls;">
+          <div class="radio" *ngFor="let ingredient of questions[currentPositionInQuestions].choices">
             <label>
               <input
+                name="sameName"
                 type="radio"
-                [value]="ingredient">{{ingredient.value.name}}
+                [value]="ingredient">{{ingredient}}
             </label>
           </div>
         </div>

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Recipe } from './exam.model';
+import {Component, OnInit} from '@angular/core';
 import {ExamService} from './exam.service';
 import {HttpServiceService} from './http-service.service';
 

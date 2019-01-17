@@ -1,5 +1,6 @@
 import { Ingredient } from '../shared/ingredient.model';
 import {Choice} from '../shared/choice.model';
+import {Chapter} from '../shared/chapter';
 
 export class Recipe {
   public name: string;
@@ -7,20 +8,12 @@ export class Recipe {
   public imagePath: string;
   public ingredients: Ingredient[];
   private choices: Choice[];
+  private  questions: Array<string> = new Array<string>();
 
-  constructor(name: string, desc: string, imagePath: string, ingredients: Ingredient[]) {
+  constructor(name: string, desc: string, imagePath: string, questions: Array<string>  ) {
     this.name = name;
     this.description = desc;
     this.imagePath = imagePath;
-    this.ingredients = ingredients;
+    this.questions = questions;
   }
-
-  public of(name: string, desc: string, imagePath: string, choices: Choice[]) {
-    this.name = name;
-    this.description = desc;
-    this.imagePath = imagePath;
-    this.choices = choices;
-    return this;
-  }
-
 }
