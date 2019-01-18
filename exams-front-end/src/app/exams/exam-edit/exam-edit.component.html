@@ -28,14 +28,17 @@
         </div>
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="codeText">Java Code</label>
-            <textarea *ngIf=" recipeForm.value.codeText !== '' "
+            <label for="codeText" *ngIf=" recipeForm.value.codeText !== ''" >Java Code</label>
+            <textarea *ngIf=" recipeForm.value.codeText !== ''; else noCodeText; "
               type="text"
               id="codeText"
               class="form-control"
               formControlName="codeText"
               rows="15" readonly>
               </textarea>
+            <ng-template #noCodeText>
+              <!-- <div> <label for="codeText">No Java Code For this Question</label> </div> -->
+            </ng-template>
           </div>
         </div>
       </div>
