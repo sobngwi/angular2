@@ -13,12 +13,13 @@ import {QuestionModel} from '../../shared/question.model';
   providers: [HttpService]
 })
 export class ExamEditComponent implements OnInit, OnDestroy {
-  id: number;
-  editMode = false;
-  questionForm: FormGroup;
+  private id: number;
+  private editMode = false;
+  private questionForm: FormGroup;
   private questions: Array<QuestionModel> = new Array<QuestionModel>();
   private currentPositionInQuestions = 0;
   private subscriptionParams: Subscription;
+  choiceSelected: any;
 
   constructor(private route: ActivatedRoute,
               private examService: ExamService,
@@ -45,8 +46,13 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptionParams.unsubscribe();
   }
+  onSelectionChange(entry) {
+    this.choiceSelected = entry;
+  }
   onCancel() {
-    this.router.navigate(['../'], {relativeTo: this.route});
+    console.log(this.choiceSelected);
+    console.log(this.questionForm);
+    // this.router.navigate(['../'], {relativeTo: this.route});
   }
   onSubmit() {
     this.onCancel();
@@ -54,13 +60,13 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   private initForm() {
     this.questionForm = new FormGroup({
       'idQuestion': new FormControl( this.questions[this.currentPositionInQuestions].id,
-        Validators.required),
+        [Validators.required, Validators.maxLength(8)]),
       'questionText': new FormControl(this.questions[this.currentPositionInQuestions].text,
         Validators.required),
       'codeText': new FormControl(this.questions[this.currentPositionInQuestions].javaCode,
-        Validators.required),
+        Validators.nullValidator),
       'choices': new FormControl(this.questions[this.currentPositionInQuestions].choices,
-        Validators.required)
+        [Validators.required])
     });
     // console.log(this.recipeForm.value);
   }
@@ -81,5 +87,13 @@ export class ExamEditComponent implements OnInit, OnDestroy {
         });
       }
     );
+  }
+
+  private onSelectValidation(control: FormControl): {[s: string]: boolean} {
+    if ( this.questionForm.get('choices').untouched) {
+      return {'screenTouched': false};
+     // return null;
+    }
+    return null;
   }
 }
