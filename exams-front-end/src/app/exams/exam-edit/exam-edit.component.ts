@@ -27,11 +27,11 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   }
 
     ngOnInit() {
-      this.httpService.simpleGet('http://localhost:8080/question/search/chapter/1').subscribe(
+      /* this.httpService.simpleGet('http://localhost:8080/question/search/chapter/1').subscribe(
         (chap1: Array<QuestionModel>) => {
           console.log(chap1);
         }
-      );
+      ); */
     this.subscriptionParams = this.route.params
       .subscribe(
         (params: Params) => {
@@ -103,5 +103,6 @@ export class ExamEditComponent implements OnInit, OnDestroy {
       'ingredients': new FormControl(this.questions[this.currentPositionInQuestions].choices,
         Validators.required)
     });
+    // console.log(this.recipeForm.value);
   }
 }

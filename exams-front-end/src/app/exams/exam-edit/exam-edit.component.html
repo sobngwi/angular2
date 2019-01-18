@@ -29,7 +29,7 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="codeText">Java Code</label>
-            <textarea
+            <textarea *ngIf=" recipeForm.value.codeText !== '' "
               type="text"
               id="codeText"
               class="form-control"

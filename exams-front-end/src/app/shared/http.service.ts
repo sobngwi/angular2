@@ -21,7 +21,6 @@ export class HttpService {
 
     if (request.status === 200) {
          data = JSON.parse(request.responseText);
-      // console.log(data);
     }
     return data;
   }
