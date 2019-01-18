@@ -9,6 +9,7 @@ import {HttpService} from '../shared/http.service';
   providers: [ExamService, HttpService]
 })
 export class ExamsComponent implements OnInit {
+
   constructor() { }
   ngOnInit() {}
 }

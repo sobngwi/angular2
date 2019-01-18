@@ -30,6 +30,7 @@ export class ExamListComponent implements OnInit {
             []));
       });
     this.examService.setRecipes(this.recipes);
+    this.chapters.push(new Chapter(100, 'Concurency', 'unknown url image'));
   }
   onNewRecipe() {
     this.router.navigate(['new'], {relativeTo: this.route});

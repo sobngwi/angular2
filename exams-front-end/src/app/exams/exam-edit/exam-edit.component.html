@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
 
       <div class="row">
         <div class="col-xs-12">
@@ -28,8 +28,8 @@
         </div>
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="codeText" *ngIf=" recipeForm.value.codeText !== ''" >Java Code</label>
-            <textarea *ngIf=" recipeForm.value.codeText !== ''; else noCodeText; "
+            <label for="codeText" *ngIf=" questionForm.value.codeText !== ''" >Java Code</label>
+            <textarea *ngIf=" questionForm.value.codeText !== ''; else noCodeText; "
               type="text"
               id="codeText"
               class="form-control"
@@ -43,13 +43,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12" formArrayName="ingredients">
-          <div class="radio" *ngFor="let ingredient of questions[currentPositionInQuestions].choices">
+        <div class="col-xs-12" formArrayName="choices">
+          <div class="radio" *ngFor="let choice of questions[currentPositionInQuestions].choices">
             <label>
               <input
                 name="sameName"
                 type="radio"
-                [value]="ingredient">{{ingredient}}
+                [value]="choice">{{choice}}
             </label>
           </div>
         </div>
@@ -61,7 +61,7 @@
             style="margin:20px;"
             type="submit"
             class="btn btn-success"
-            [disabled]="!recipeForm.valid">Save</button>
+            [disabled]="!questionForm.valid">Save</button>
           <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
         </div>
       </div>
