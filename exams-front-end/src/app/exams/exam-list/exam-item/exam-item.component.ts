@@ -13,5 +13,4 @@ export class ExamItemComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

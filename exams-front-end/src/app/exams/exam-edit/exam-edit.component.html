@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12" formArrayName="choices">
+        <div class="col-xs-12" formArrayName="choices" *ngIf="isSingleChoice()">
           <div class="radio" *ngFor="let choice of questions[currentPositionInQuestions].choices">
             <label>
               <input
@@ -55,7 +55,25 @@
                 [value]="'choice'"
                 [checked]="false"
                 (click)="onSelectionChange($event)"
-                >{{choice}}
+                > {{choice}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-12" formArrayName="choices" *ngIf="! isSingleChoice()">
+          <div class="radio" *ngFor="let choice of questions[currentPositionInQuestions].choices">
+            <label>
+              <input
+                name="selectedChoice"
+                form
+                id="choice"
+                type="checkbox"
+                [value]="'choice'"
+                [checked]="false"
+                (click)="onSelectionChange($event)"
+              > {{choice}}
             </label>
           </div>
         </div>
@@ -69,13 +87,9 @@
             style="margin:20px;"
             type="submit"
             class="btn btn-success"
-            [disabled]="!questionForm.valid">Submit the answer</button>
-         <!--   <button
-            style="margin:20px;"
-            type="submit"
-            class="btn btn-success"
-            (click)="nextQuestion()">Next Question</button> -->
-          <a  class="previous" (click)="previousQuestion()">&laquo; Previous</a>
+            (click)="onSubmit()"
+            [disabled]="!questionForm.valid || isAlreadySubmitted()">Submit the answer</button>
+          <a  class="previous" (click)="previousQuestion()"> &laquo; Previous</a>
           <a  class="next" (click)="nextQuestion()">Next &raquo;</a>
         </div>
       </div>

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { Recipe } from '../exam.model';
-import { ExamService } from '../exam.service';
-import {Chapter} from '../../shared/chapter';
+import {Recipe} from '../exam.model';
+import {ExamService} from '../exam.service';
 import {HttpService} from '../../shared/http.service';
 
 @Component({
@@ -18,8 +17,6 @@ export class ExamListComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   recipes: Recipe[];
-  private  chapters: Array<Chapter> = new Array<Chapter>();
-
   ngOnInit() {
     this.recipes = this.examService.getRecipes();
     this.httpService.executeSynchronousRequest('http://localhost:8080/question/search/subjects/all').forEach(

@@ -17,9 +17,11 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   private editMode = false;
   private questionForm: FormGroup;
   private questions: Array<QuestionModel> = new Array<QuestionModel>();
+  nbQuestions = 0;
   private currentPositionInQuestions = 0;
   private subscriptionParams: Subscription;
   choiceSelected: any;
+  private submitedQuestions: Array<number> = new Array<number>();
 
   constructor(private route: ActivatedRoute,
               private examService: ExamService,
@@ -40,8 +42,11 @@ export class ExamEditComponent implements OnInit, OnDestroy {
           this.editMode = params['id'] != null;
           this.setQuestionsOnEachChapter(this.id);
           this.initForm();
-        }
-      );
+        });
+    this.nbQuestions = this.questions.length;
+      for (let i = 0; i < this.nbQuestions ; i++) {
+        this.submitedQuestions.push(0);  // use i instead of 0
+      }
     this.questionForm.valueChanges.subscribe(
       (status) => console.log('this status changed', status)
     );
@@ -54,31 +59,25 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   }
   onSelectionChange(entry) {
     console.log(entry);
-    this.choiceSelected = entry;
   }
   onCancel(questionForm) {
     // this.router.navigate(['../'], {relativeTo: this.route});
-    questionForm = null;
-    this.questionForm = null;
-    console.log(questionForm);
-    console.log(this.questions);
-    this.questions = [];
-    console.log(this.questions);
-    this.setQuestionsOnEachChapter(this.id);
-    this.initForm();
-    console.log(this.questions);
   }
   nextQuestion() {
+    if ( this.currentPositionInQuestions === (this.nbQuestions - 1 ) ) {
+      return ;
+    }
     this.currentPositionInQuestions = this.currentPositionInQuestions + 1;
     this.setQuestionsOnEachChapter(this.id);
     this.initForm();
-    console.log(this.currentPositionInQuestions);
   }
   previousQuestion() {
+    if ( this.currentPositionInQuestions === 0) {
+      return ;
+    }
     this.currentPositionInQuestions = this.currentPositionInQuestions - 1;
     this.setQuestionsOnEachChapter(this.id);
     this.initForm();
-    console.log(this.currentPositionInQuestions);
   }
   onReset() {
     console.log(this.currentPositionInQuestions);
@@ -87,6 +86,7 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     this.initForm();
   }
   onSubmit() {
+    this.submitedQuestions[this.currentPositionInQuestions] = 1 ;
   }
   private initForm() {
     this.questionForm = new FormGroup({
@@ -140,5 +140,17 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     };
 
     return validator;
+  }
+
+  isDisable() {
+    return this.currentPositionInQuestions === 0 ;
+  }
+
+  isAlreadySubmitted() {
+    return this.submitedQuestions[this.currentPositionInQuestions] === 1;
+  }
+
+  isSingleChoice() {
+    return this.questions[this.currentPositionInQuestions].type === 'Single Choice';
   }
 }
