@@ -48,11 +48,13 @@
           <div class="radio" *ngFor="let choice of questions[currentPositionInQuestions].choices">
             <label>
               <input
-                name="sameName"
+                name="selectedChoice"
+                form
                 id="choice"
                 type="radio"
                 [value]="'choice'"
-                (change)="onSelectionChange(choice)"
+                [checked]="false"
+                (click)="onSelectionChange($event)"
                 >{{choice}}
             </label>
           </div>
@@ -67,8 +69,14 @@
             style="margin:20px;"
             type="submit"
             class="btn btn-success"
-            [disabled]="!questionForm.valid">Save</button>
-          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+            [disabled]="!questionForm.valid">Submit the answer</button>
+         <!--   <button
+            style="margin:20px;"
+            type="submit"
+            class="btn btn-success"
+            (click)="nextQuestion()">Next Question</button> -->
+          <a  class="previous" (click)="previousQuestion()">&laquo; Previous</a>
+          <a  class="next" (click)="nextQuestion()">Next &raquo;</a>
         </div>
       </div>
     </form>

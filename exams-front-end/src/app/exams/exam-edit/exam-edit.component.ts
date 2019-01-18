@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ExamService} from '../exam.service';
 import {Subscription} from 'rxjs';
 import {HttpService} from '../../shared/http.service';
@@ -42,20 +42,51 @@ export class ExamEditComponent implements OnInit, OnDestroy {
           this.initForm();
         }
       );
+    this.questionForm.valueChanges.subscribe(
+      (status) => console.log('this status changed', status)
+    );
+      this.questionForm.valueChanges.subscribe(
+        (value) => console.log('this value changed', value)
+    );
   }
   ngOnDestroy(): void {
     this.subscriptionParams.unsubscribe();
   }
   onSelectionChange(entry) {
+    console.log(entry);
     this.choiceSelected = entry;
   }
-  onCancel() {
-    console.log(this.choiceSelected);
-    console.log(this.questionForm);
+  onCancel(questionForm) {
     // this.router.navigate(['../'], {relativeTo: this.route});
+    questionForm = null;
+    this.questionForm = null;
+    console.log(questionForm);
+    console.log(this.questions);
+    this.questions = [];
+    console.log(this.questions);
+    this.setQuestionsOnEachChapter(this.id);
+    this.initForm();
+    console.log(this.questions);
+  }
+  nextQuestion() {
+    this.currentPositionInQuestions = this.currentPositionInQuestions + 1;
+    this.setQuestionsOnEachChapter(this.id);
+    this.initForm();
+    console.log(this.currentPositionInQuestions);
+  }
+  previousQuestion() {
+    this.currentPositionInQuestions = this.currentPositionInQuestions - 1;
+    this.setQuestionsOnEachChapter(this.id);
+    this.initForm();
+    console.log(this.currentPositionInQuestions);
+  }
+  onReset() {
+    console.log(this.currentPositionInQuestions);
+   // this.currentPositionInQuestions = 0;
+    this.setQuestionsOnEachChapter(this.id);
+    this.initForm();
   }
   onSubmit() {
-    this.onCancel();
   }
   private initForm() {
     this.questionForm = new FormGroup({
@@ -66,7 +97,7 @@ export class ExamEditComponent implements OnInit, OnDestroy {
       'codeText': new FormControl(this.questions[this.currentPositionInQuestions].javaCode,
         Validators.nullValidator),
       'choices': new FormControl(this.questions[this.currentPositionInQuestions].choices,
-        [Validators.required])
+        [Validators.nullValidator/*, this.minSelectedCheckboxes(1)*/])
     });
     // console.log(this.recipeForm.value);
   }
@@ -95,5 +126,19 @@ export class ExamEditComponent implements OnInit, OnDestroy {
      // return null;
     }
     return null;
+  }
+   minSelectedCheckboxes (min = 1) {
+    const validator: ValidatorFn = (formArray: FormArray) => {
+      const totalSelected = formArray.controls
+      // get a list of checkbox values (boolean)
+        .map(control => control.value)
+        // total up the number of checked checkboxes
+        .reduce((prev, next) => next ? prev + next : prev, 0);
+
+      // if the total is not greater than the minimum, return the error message
+      return totalSelected >= min ? null : { required: true };
+    };
+
+    return validator;
   }
 }
