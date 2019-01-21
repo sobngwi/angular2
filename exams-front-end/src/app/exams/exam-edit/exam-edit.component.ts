@@ -13,6 +13,12 @@ import {QuestionModel} from '../../shared/question.model';
   providers: [HttpService]
 })
 export class ExamEditComponent implements OnInit, OnDestroy {
+
+  constructor(private route: ActivatedRoute,
+              private examService: ExamService,
+              private httpService: HttpService,
+              private router: Router) {
+  }
   private id: number;
   private editMode = false;
   private questionForm: FormGroup;
@@ -20,14 +26,9 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   nbQuestions = 0;
   private currentPositionInQuestions = 0;
   private subscriptionParams: Subscription;
-  choiceSelected: any;
-  private submitedQuestions: Array<number> = new Array<number>();
+  private submittedQuestions: Array<number> = new Array<number>();
 
-  constructor(private route: ActivatedRoute,
-              private examService: ExamService,
-              private httpService: HttpService,
-              private router: Router) {
-  }
+  private lineSplitter = /\r\n|\r|\n/;
 
     ngOnInit() {
       /* this.httpService.simpleGet('http://localhost:8080/question/search/chapter/1').subscribe(
@@ -45,7 +46,7 @@ export class ExamEditComponent implements OnInit, OnDestroy {
         });
     this.nbQuestions = this.questions.length;
       for (let i = 0; i < this.nbQuestions ; i++) {
-        this.submitedQuestions.push(0);  // use i instead of 0
+        this.submittedQuestions.push(0);  // use i instead of 0
       }
     this.questionForm.valueChanges.subscribe(
       (status) => console.log('this status changed', status)
@@ -59,9 +60,6 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   }
   onSelectionChange(entry) {
     console.log(entry);
-  }
-  onCancel(questionForm) {
-    // this.router.navigate(['../'], {relativeTo: this.route});
   }
   nextQuestion() {
     if ( this.currentPositionInQuestions === (this.nbQuestions - 1 ) ) {
@@ -79,14 +77,9 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     this.setQuestionsOnEachChapter(this.id);
     this.initForm();
   }
-  onReset() {
-    console.log(this.currentPositionInQuestions);
-   // this.currentPositionInQuestions = 0;
-    this.setQuestionsOnEachChapter(this.id);
-    this.initForm();
-  }
+
   onSubmit() {
-    this.submitedQuestions[this.currentPositionInQuestions] = 1 ;
+    this.submittedQuestions[this.currentPositionInQuestions] = 1 ;
   }
   private initForm() {
     this.questionForm = new FormGroup({
@@ -147,10 +140,18 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   }
 
   isAlreadySubmitted() {
-    return this.submitedQuestions[this.currentPositionInQuestions] === 1;
+    return this.submittedQuestions[this.currentPositionInQuestions] === 1;
   }
 
   isSingleChoice() {
     return this.questions[this.currentPositionInQuestions].type === 'Single Choice';
+  }
+
+  getNumberOfRowsForCodeTex() {
+    return this.questions[this.currentPositionInQuestions].javaCode.split(this.lineSplitter).length;
+  }
+
+  getNumberOfRowsForQuestionText() {
+    return this.questions[this.currentPositionInQuestions].text.split(this.lineSplitter).length;
   }
 }

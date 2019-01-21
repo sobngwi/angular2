@@ -24,7 +24,7 @@
               id="questionText"
               class="form-control"
               formControlName="questionText"
-              rows="3" readonly></textarea>
+              [rows]="getNumberOfRowsForQuestionText()" readonly></textarea>
           </div>
         </div>
         <div class="col-xs-12">
@@ -35,7 +35,7 @@
               id="codeText"
               class="form-control"
               formControlName="codeText"
-              rows="15" readonly>
+              [rows]="getNumberOfRowsForCodeTex()" readonly>
               </textarea>
             <ng-template #noCodeText>
               <!-- <div> <label for="codeText">No Java Code For this Question</label> </div> -->
