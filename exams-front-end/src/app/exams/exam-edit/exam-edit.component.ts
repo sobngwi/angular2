@@ -19,6 +19,7 @@ export class ExamEditComponent implements OnInit, OnDestroy {
               private httpService: HttpService,
               private router: Router) {
   }
+
   private id: number;
   private editMode = false;
   private questionForm: FormGroup;
@@ -27,15 +28,23 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   private currentPositionInQuestions = 0;
   private subscriptionParams: Subscription;
   private submittedQuestions: Array<number> = new Array<number>();
-
   private lineSplitter = /\r\n|\r|\n/;
+  private optionsMap = {};
+  private optionsChecked = [];
 
-    ngOnInit() {
-      /* this.httpService.simpleGet('http://localhost:8080/question/search/chapter/1').subscribe(
-        (chap1: Array<QuestionModel>) => {
-          console.log(chap1);
-        }
-      ); */
+  ngOnInit() {
+    /* this.httpService.simpleGet('http://localhost:8080/question/search/chapter/1').subscribe(
+      (chap1: Array<QuestionModel>) => {
+        console.log(chap1);
+      }
+    ); */
+    /*
+  this.questionForm.valueChanges.subscribe(
+    (status) => console.log('this status changed', status)
+  );
+  this.questionForm.valueChanges.subscribe(
+    (value) => console.log('this value changed', value)
+  );*/
     this.subscriptionParams = this.route.params
       .subscribe(
         (params: Params) => {
@@ -43,61 +52,21 @@ export class ExamEditComponent implements OnInit, OnDestroy {
           this.editMode = params['id'] != null;
           this.setQuestionsOnEachChapter(this.id);
           this.initForm();
+
         });
+    this.optionsChecked = [];
+    this.optionsMap = {};
     this.nbQuestions = this.questions.length;
-      for (let i = 0; i < this.nbQuestions ; i++) {
-        this.submittedQuestions.push(0);  // use i instead of 0
-      }
-    this.questionForm.valueChanges.subscribe(
-      (status) => console.log('this status changed', status)
-    );
-      this.questionForm.valueChanges.subscribe(
-        (value) => console.log('this value changed', value)
-    );
+    for (let i = 0; i < this.nbQuestions; i++) {
+      this.submittedQuestions.push(0);
+    }
   }
   ngOnDestroy(): void {
     this.subscriptionParams.unsubscribe();
   }
-  onSelectionChange(entry) {
-    console.log(entry);
-  }
-  nextQuestion() {
-    if ( this.currentPositionInQuestions === (this.nbQuestions - 1 ) ) {
-      return ;
-    }
-    this.currentPositionInQuestions = this.currentPositionInQuestions + 1;
-    this.setQuestionsOnEachChapter(this.id);
-    this.initForm();
-  }
-  previousQuestion() {
-    if ( this.currentPositionInQuestions === 0) {
-      return ;
-    }
-    this.currentPositionInQuestions = this.currentPositionInQuestions - 1;
-    this.setQuestionsOnEachChapter(this.id);
-    this.initForm();
-  }
-
-  onSubmit() {
-    this.submittedQuestions[this.currentPositionInQuestions] = 1 ;
-  }
-  private initForm() {
-    this.questionForm = new FormGroup({
-      'idQuestion': new FormControl( this.questions[this.currentPositionInQuestions].id,
-        [Validators.required, Validators.maxLength(8)]),
-      'questionText': new FormControl(this.questions[this.currentPositionInQuestions].text,
-        Validators.required),
-      'codeText': new FormControl(this.questions[this.currentPositionInQuestions].javaCode,
-        Validators.nullValidator),
-      'choices': new FormControl(this.questions[this.currentPositionInQuestions].choices,
-        [Validators.nullValidator/*, this.minSelectedCheckboxes(1)*/])
-    });
-    // console.log(this.recipeForm.value);
-  }
-  private setQuestionsOnEachChapter( id: number) {
+  private setQuestionsOnEachChapter(id: number) {
     this.httpService
-      .executeSynchronousRequest('http://localhost:8080/question/search/chapter/' + this.examService.getRecipe(id).name).
-    forEach(
+      .executeSynchronousRequest('http://localhost:8080/question/search/chapter/' + this.examService.getRecipe(id).name).forEach(
       value => {
         this.questions.push({
           id: value.id,
@@ -112,46 +81,68 @@ export class ExamEditComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  private onSelectValidation(control: FormControl): {[s: string]: boolean} {
-    if ( this.questionForm.get('choices').untouched) {
-      return {'screenTouched': false};
-     // return null;
+  private initForm() {
+    this.questionForm = new FormGroup({
+      'idQuestion': new FormControl(this.questions[this.currentPositionInQuestions].id,
+        [Validators.required, Validators.maxLength(8)]),
+      'questionText': new FormControl(this.questions[this.currentPositionInQuestions].text,
+        Validators.required),
+      'codeText': new FormControl(this.questions[this.currentPositionInQuestions].javaCode,
+        Validators.nullValidator),
+      'choices': new FormControl(this.questions[this.currentPositionInQuestions].choices,
+        [Validators.nullValidator/*, this.minSelectedCheckboxes(1)*/])
+    });
+  }
+  onSelectionChange(choice, entry) {
+    this.optionsMap[choice] = entry.target.checked;
+    for (const x in this.optionsMap) {
+      if (this.optionsMap[x]) {
+      }
     }
-    return null;
-  }
-   minSelectedCheckboxes (min = 1) {
-    const validator: ValidatorFn = (formArray: FormArray) => {
-      const totalSelected = formArray.controls
-      // get a list of checkbox values (boolean)
-        .map(control => control.value)
-        // total up the number of checked checkboxes
-        .reduce((prev, next) => next ? prev + next : prev, 0);
-
-      // if the total is not greater than the minimum, return the error message
-      return totalSelected >= min ? null : { required: true };
-    };
-
-    return validator;
   }
 
-  isDisable() {
-    return this.currentPositionInQuestions === 0 ;
+  nextQuestion() {
+    if (this.currentPositionInQuestions === (this.nbQuestions - 1)) {
+      return;
+    }
+    this.currentPositionInQuestions = this.currentPositionInQuestions + 1;
+    this.optionsMap = {};
+    this.optionsChecked = [];
+    if ( ! this.submittedQuestions[this.currentPositionInQuestions] ) {
+      this.setQuestionsOnEachChapter(this.id);
+      this.initForm();
+    }
   }
 
+  previousQuestion() {
+    if (this.currentPositionInQuestions === 0) {
+      return;
+    }
+    this.currentPositionInQuestions = this.currentPositionInQuestions - 1;
+    this.setQuestionsOnEachChapter(this.id);
+    this.initForm();
+  }
+  onSubmit() {
+    this.submittedQuestions[this.currentPositionInQuestions] = 1;
+    for (const x in this.optionsMap) {
+      if (this.optionsMap[x]) {
+        this.optionsChecked.push(x);
+      }
+    }
+    console.log('nb Chacked Options =', this.optionsChecked.length);
+    this.optionsMap = {};
+    this.optionsChecked = [];
+  }
   isAlreadySubmitted() {
     return this.submittedQuestions[this.currentPositionInQuestions] === 1;
   }
-
   isSingleChoice() {
     return this.questions[this.currentPositionInQuestions].type === 'Single Choice';
   }
-
   getNumberOfRowsForCodeTex() {
     return this.questions[this.currentPositionInQuestions].javaCode.split(this.lineSplitter).length;
   }
-
   getNumberOfRowsForQuestionText() {
-    return this.questions[this.currentPositionInQuestions].text.split(this.lineSplitter).length;
+    return this.questions[this.currentPositionInQuestions].text.split(this.lineSplitter).length + 1;
   }
 }
