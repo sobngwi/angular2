@@ -5,6 +5,7 @@ import {ExamService} from '../exam.service';
 import {Subscription} from 'rxjs';
 import {HttpService} from '../../shared/http.service';
 import {QuestionModel} from '../../shared/question.model';
+import {SolutionModel} from '../../shared/solution.model';
 
 @Component({
   selector: 'app-exam-edit',
@@ -13,6 +14,7 @@ import {QuestionModel} from '../../shared/question.model';
   providers: [HttpService]
 })
 export class ExamEditComponent implements OnInit, OnDestroy {
+
 
   constructor(private route: ActivatedRoute,
               private examService: ExamService,
@@ -23,14 +25,17 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   private id: number;
   private editMode = false;
   private questionForm: FormGroup;
-  private questions: Array<QuestionModel> = new Array<QuestionModel>();
+  questions: Array<QuestionModel> = new Array<QuestionModel>();
+  solutions: Array<SolutionModel> = new Array<SolutionModel>();
   nbQuestions = 0;
-  private currentPositionInQuestions = 0;
+  currentPositionInQuestions = 0;
   private subscriptionParams: Subscription;
   private submittedQuestions: Array<number> = new Array<number>();
   private lineSplitter = /\r\n|\r|\n/;
   private optionsMap = {};
   private optionsChecked = [];
+  private yourSolution: string;
+  canShowTheAnswer: boolean;
 
   ngOnInit() {
     /* this.httpService.simpleGet('http://localhost:8080/question/search/chapter/1').subscribe(
@@ -90,7 +95,7 @@ export class ExamEditComponent implements OnInit, OnDestroy {
       'codeText': new FormControl(this.questions[this.currentPositionInQuestions].javaCode,
         Validators.nullValidator),
       'choices': new FormControl(this.questions[this.currentPositionInQuestions].choices,
-        [Validators.nullValidator/*, this.minSelectedCheckboxes(1)*/])
+        [Validators.nullValidator])
     });
   }
   onSelectionChange(choice, entry) {
@@ -108,6 +113,7 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     this.currentPositionInQuestions = this.currentPositionInQuestions + 1;
     this.optionsMap = {};
     this.optionsChecked = [];
+    this.yourSolution = '';
     if ( ! this.submittedQuestions[this.currentPositionInQuestions] ) {
       this.setQuestionsOnEachChapter(this.id);
       this.initForm();
@@ -118,7 +124,7 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     if (this.currentPositionInQuestions === 0) {
       return;
     }
-    this.currentPositionInQuestions = this.currentPositionInQuestions - 1;
+    this.currentPositionInQuestions -= 1;
     this.setQuestionsOnEachChapter(this.id);
     this.initForm();
   }
@@ -127,12 +133,28 @@ export class ExamEditComponent implements OnInit, OnDestroy {
     for (const x in this.optionsMap) {
       if (this.optionsMap[x]) {
         this.optionsChecked.push(x);
+        console.log('option checked value = ', x );
       }
+     const solution = this.httpService.executeSynchronousRequest('http://localhost:8080/solution/search/'
+      + this.questions[this.currentPositionInQuestions].id);
+     this.solutions.push({
+       reasons : solution.reasons,
+       id: solution.id,
+       chapitre: solution.chapitre,
+       choice: solution.choice,
+     });
+     this.yourSolution = '';
+      this.optionsChecked.forEach(
+        value => this.yourSolution += value + '\n'
+      );
+      console.log(this.yourSolution);
+      console.log(solution);
+      this.canShowTheAnswer = false;
     }
-    console.log('nb Chacked Options =', this.optionsChecked.length);
     this.optionsMap = {};
     this.optionsChecked = [];
   }
+
   isAlreadySubmitted() {
     return this.submittedQuestions[this.currentPositionInQuestions] === 1;
   }
@@ -144,5 +166,39 @@ export class ExamEditComponent implements OnInit, OnDestroy {
   }
   getNumberOfRowsForQuestionText() {
     return this.questions[this.currentPositionInQuestions].text.split(this.lineSplitter).length + 1;
+  }
+
+  getColor() {
+    if ( this.submittedQuestions[this.currentPositionInQuestions] === 1) {
+      return 'green';
+    } else if (this.submittedQuestions[this.currentPositionInQuestions] !== 1) {
+      return '';
+    } else {
+      return '';
+    }
+  }
+
+  viewTheAnswer() {
+    this.canShowTheAnswer = true;
+   let solution: SolutionModel = new class implements SolutionModel {
+     chapitre = '';
+     choice = '';
+     id = '';
+     reasons = '';
+   };
+    const BreakException = {};
+    try {
+      this.solutions.forEach(
+        value => {
+          if (value.id === this.questions[this.currentPositionInQuestions].id) {
+            solution = value;
+          }
+        }
+      );
+    } catch (e) {
+      if (e !== BreakException) { throw e; }
+    }
+    return (solution.choice  + '\n'   + solution.reasons +
+    '---> Your choice :' + this.yourSolution);
   }
 }

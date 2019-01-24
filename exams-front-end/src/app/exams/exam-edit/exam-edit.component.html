@@ -45,13 +45,15 @@
       </div>
       <div class="row">
         <div class="col-xs-12" formArrayName="choices" *ngIf="isSingleChoice()">
-          <div class="radio" *ngFor="let choice of questions[currentPositionInQuestions].choices">
+          <div class="radio"
+               *ngFor="let choice of questions[currentPositionInQuestions].choices">
             <label>
               <input
                 name="selectedChoice"
                 id="radio"
                 type="radio"
                 [value]="'choice'"
+                [ngStyle]="{backgroundColor: getColor()}"
                 [checked]="false"
                 (click)="onSelectionChange(choice, $event)"
                 > {{choice}}
@@ -62,13 +64,15 @@
       <hr>
       <div class="row">
         <div class="col-xs-12" formArrayName="choices" *ngIf="! isSingleChoice()">
-          <div class="radio" *ngFor="let choice of questions[currentPositionInQuestions].choices">
+          <div class="radio"
+               *ngFor="let choice of questions[currentPositionInQuestions].choices">
             <label>
               <input
                 name="options"
                 id="checkbox"
                 type="checkbox"
                 value="{{choice}}"
+                [ngStyle]="{backgroundColor: getColor()}"
                 [checked]="false"
                 (change)="onSelectionChange(choice, $event)"
               > {{choice}}
@@ -79,14 +83,20 @@
       <hr>
       <div class="row">
         <div class="col-xs-12">
-          <span *ngIf="!questionForm.valid"
-                class="help-block"> Please click on Cancel button  as question Id is invalid answers </span>
+          <span *ngIf="!questionForm.valid" class="help-block"> Please click on Cancel button  as question Id is invalid answers </span>
           <button
             style="margin:20px;"
             type="submit"
             class="btn btn-success"
             (click)="onSubmit()"
-            [disabled]="!questionForm.valid || isAlreadySubmitted()">Submit the answer</button>
+            *ngIf="!(!questionForm.valid || isAlreadySubmitted())">Submit your answer</button>
+          <button
+            style="margin:20px;"
+            type="submit"
+            class="btn btn-success"
+            (click)="viewTheAnswer()"
+            *ngIf="(!questionForm.valid || isAlreadySubmitted())">View the answer</button>
+          <span *ngIf="canShowTheAnswer" class="help-block">{{viewTheAnswer()}} </span>
           <a  class="previous" (click)="previousQuestion()"> &laquo; Previous</a>
           <a  class="next" (click)="nextQuestion()">Next &raquo;</a>
         </div>
